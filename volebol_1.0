@@ -1,0 +1,101 @@
+
+
+#include <iostream>
+
+const int n = 6;
+	
+	void perehod (int *arr)
+	{
+		int b = *(arr);
+		for (int i = 0; i < n-1; i++)
+			*(arr + i) = *(arr + i + 1) ;	
+		*(arr + 5) = b;
+	}
+	void output_coms (int *arr1,int *arr2)
+	{
+		for (int i = 0; i < n*2; i++)
+		{
+			if (i <= n)
+				std::cout << *(arr1 + i);
+			if (i == n/2)
+				std::cout << std::endl;
+			if (i > n)
+				std::cout << *(arr2 + i);
+			if (i == n+n/2)
+				std::cout << std::endl;
+		}
+	}
+	int main()
+	{
+		setlocale(LC_ALL, "Russian");
+		 int com_B[n] = {8,2,6,1,9,4}, com_A[n] = {1,5,10,9,8,12},
+			chet_A = 0, chet_B = 0,
+			chet_part_A = 0,
+			chet_part_B = 0,
+			user_chois , seria_com_A = 0, seria_com_B = 0;
+		 bool end_game = false;
+		 bool* pend_game = &end_game;
+		 int* pchet_A = &chet_A,
+			 * pchet_B = &chet_B,
+			 * pchet_part_A = &chet_part_A,
+			 * pchet_part_B = &chet_part_B,
+			 * puser_chois = &user_chois,
+			 * pseria_com_A = &seria_com_A,
+			 * pseria_com_B = &seria_com_B;
+		
+		
+		while (! *pend_game)
+		{
+			std::cout << "счет матча "
+				<< *pchet_A << "(" << *pchet_part_A << ")"
+				<< *pchet_B << "(" << *pchet_part_B << ")" << std::endl;
+			output_coms(com_A,com_B);
+			std::cout << "выберите действие: \"1\" -забила команда  1 \n \"2\" -забила команда 2 ";
+			std::cin >> *puser_chois;
+		
+			if (*puser_chois <= 0 || *puser_chois >= 3) {
+				std::cout << "неверный ввод";
+				break;
+			}
+			
+			  
+			if (*puser_chois == 1)
+			{
+				*pchet_part_A++;
+				if (*pseria_com_A == 0)
+					perehod(com_A);
+				*pseria_com_A = 1;
+				*pseria_com_B = 0;
+			}
+			if (*puser_chois == 2)
+			{
+				*pchet_part_B++;
+				if (*pseria_com_B == 0)
+					perehod(com_B);
+				*pseria_com_B = 1;
+				*pseria_com_A = 0;
+			}
+			if (*pchet_part_A - *pchet_part_B >= 2 && *pchet_part_A >= 25)
+			{
+				*pchet_A++;
+				*pchet_part_A = 0;
+				*pchet_part_B = 0;
+			}
+				
+			if (*pchet_part_B - *pchet_part_A >= 2 && *pchet_part_B >= 25)
+			{
+				*pchet_B++;
+				*pchet_part_A = 0;
+				*pchet_part_B = 0;
+			}
+
+			if (*pchet_A == 3 || *pchet_B == 3)
+			{
+				*pend_game = true;
+			}
+			system("cls");
+		}
+}	
+
+
+
